@@ -1,12 +1,29 @@
 Main objective: complete the validation task for the skill text.
 
+## Constraints
+
+- **Self-contained:** rely only on the skill text and this task. Do not consult external sources — no web/browser lookups, no package (NuGet) documentation, no help/documentation sites (MS Learn, StackOverflow, GitHub), and no other local projects or codebases.
+- Add only the package references and project settings specified in this task or the skill; do not research or add others.
+
 ## Prerequisites
 
-This task assumes you are working in a blank .NET MAUI project that has already been created and is ready to build. Before running this instruction, confirm that the project compiles successfully in the current environment.
+- Create a blank .NET MAUI project in `E:\temp` (run from `E:\temp`):
 
-This assignment is only intended to validate the skill text. Create a showcase and provide clear feedback about the contents of the skill. Compile the project. It is a blank project; I just created it. It may also be useful to compile beforehand for safety (perhaps only for Windows so it is faster).
+  ```powershell
+  dotnet new maui -n PopupShowcase
+  ```
 
-This is about the .NET MAUI popup skill.
+- Add the packages to the generated `.csproj`:
+
+  ```xml
+  <PackageReference Include="CommunityToolkit.Maui" Version="*" />
+  <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
+  ```
+
+- In `MauiProgram.cs`, register the toolkit with `.UseMauiCommunityToolkit()`.
+- Compile the project before implementing to confirm it builds (compiling only the Windows TFM is fine for speed).
+
+This assignment is only intended to validate the skill text. Create a showcase and provide clear feedback about the contents of the skill. This is about the .NET MAUI popup skill.
 
 Based on the skill, create these buttons (from top to bottom) in `MainPage.xaml` as a showcase, with a section label for each grouping. Each button demonstrates exactly one pattern from the skill:
 
