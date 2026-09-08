@@ -11,8 +11,19 @@ This repository is intentionally lightweight: each skill lives in its own folder
 ├── LICENSE
 ├── README.md
 ├── skills/
-│   └── net-maui-popups/
+│   ├── net-maui-custom-control/
+│   │   └── SKILL.md
+│   ├── net-maui-popups/
+│   │   └── SKILL.md
+│   └── net-maui-skiasharp/
 │       └── SKILL.md
+├── showcases/
+│   ├── net-maui-custom-control/
+│   │   └── create-all-controls.md
+│   ├── net-maui-popups/
+│   │   └── create-all-popups.md
+│   └── net-maui-skiasharp/
+│       └── create-skiasharp-showcase.md
 └── install-skills.bat
 ```
 
@@ -27,7 +38,17 @@ Each skill folder follows the standard Copilot skill pattern:
 
 The current repository includes:
 
+- `net-maui-custom-control` — .NET MAUI custom control design and implementation guidance (base-class choice by semantic role, BindableProperty, ControlTemplate, XAML vs C#, when to defer to SkiaSharp)
 - `net-maui-popups` — .NET MAUI popup and snackbar implementation guidance
+- `net-maui-skiasharp` — .NET MAUI custom 2D rendering with SkiaSharp 4.x (SKCanvasView vs SKGLView, coordinate systems, invalidation/animation, resource reuse, 4.x API rules)
+
+## Validation showcases
+
+Each skill has a matching task under `showcases/` used to validate the skill text: a blank MAUI project is created in `E:\temp` (`dotnet new maui`), the showcase is implemented strictly from the skill, and the project is compiled. The validation run should produce clear feedback on the skill's contents.
+
+- `showcases/net-maui-custom-control/create-all-controls.md` — one compact control per base-class category, all on one page
+- `showcases/net-maui-popups/create-all-popups.md` — one button per popup pattern
+- `showcases/net-maui-skiasharp/create-skiasharp-showcase.md` — three small animated/interactive SkiaSharp controls
 
 ## Skill format and spec reference
 
