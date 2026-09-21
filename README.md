@@ -11,6 +11,8 @@ This repository is intentionally lightweight: each skill lives in its own folder
 ├── LICENSE
 ├── README.md
 ├── skills/
+│   ├── dotnet-normalize-lineendings/
+│   │   └── SKILL.md
 │   ├── net-maui-custom-control/
 │   │   └── SKILL.md
 │   ├── net-maui-popups/
@@ -38,6 +40,7 @@ Each skill folder follows the standard Copilot skill pattern:
 
 The current repository includes:
 
+- `dotnet-normalize-lineendings` — Git repository line-ending audit and normalization (diagnosis, `.gitattributes` creation, PowerShell in-place CRLF→LF conversion, `core.autocrlf`/`core.eol` interaction)
 - `net-maui-custom-control` — .NET MAUI custom control design and implementation guidance (base-class choice by semantic role, BindableProperty, ControlTemplate, XAML vs C#, when to defer to SkiaSharp)
 - `net-maui-popups` — .NET MAUI popup and snackbar implementation guidance
 - `net-maui-skiasharp` — .NET MAUI custom 2D rendering with SkiaSharp 4.x (SKCanvasView vs SKGLView, coordinate systems, invalidation/animation, resource reuse, 4.x API rules)
