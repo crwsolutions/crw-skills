@@ -2,6 +2,8 @@
 
 A collection of reusable GitHub Copilot skill packs for practical engineering tasks.
 
+[![skills.sh](https://skills.sh/b/crwsolutions/crw-skills)](https://skills.sh/crwsolutions/crw-skills)
+
 This repository is intentionally lightweight: each skill lives in its own folder under `skills/` and contains a `SKILL.md` file with the instructions, examples, and decision guidance for a specific topic.
 
 ## Repository structure
