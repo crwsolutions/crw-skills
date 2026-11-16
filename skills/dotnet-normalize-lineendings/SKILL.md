@@ -217,8 +217,25 @@ foreach ($f in (git ls-files)) {
     }
 
     if ($hasCrlf) {
-        $text = [System.IO.File]::ReadAllText($f)
-        [System.IO.File]::WriteAllText($f, $text -replace "`r`n", "`n")
+        # Strip CR bytes at the byte level. Do NOT use
+        # [System.IO.File]::WriteAllText($f, $text -replace "`r`n", "`n"):
+        # on some PowerShell builds the -replace result does not bind to
+        # the (string, char[], Encoding?) overload and every write fails
+        # with "Cannot find an overload for WriteAllText and the argument
+        # count: 3" while the counter keeps incrementing. Working on raw
+        # bytes is immune to string overload resolution and also cannot
+        # corrupt a BOM (it only removes 0x0D that immediately precedes 0x0A).
+        $outBytes = New-Object byte[] $bytes.Length
+        $w = 0
+        for ($i = 0; $i -lt $bytes.Length; $i++) {
+            if ($bytes[$i] -eq 13 -and ($i + 1) -lt $bytes.Length -and $bytes[$i + 1] -eq 10) {
+                continue
+            }
+            $outBytes[$w] = $bytes[$i]
+            $w++
+        }
+        $outBytes = $outBytes[0..($w - 1)]
+        [System.IO.File]::WriteAllBytes($f, $outBytes)
         $converted++
     }
 }
@@ -319,6 +336,7 @@ Understanding the interaction prevents future confusion:
 2. **`git add --renormalize .` only updates the index.** The working tree files are unchanged until you convert them in place and re-add.
 3. **Use an allowlist, not an exclusion list.** An exclusion list (`if ($f -match 'png|jpg|…')`) risks accidentally converting files with unknown binary extensions. An allowlist only touches files you explicitly recognize as text.
 4. **`.cmd` and `.bat` files must stay CRLF.** Windows `cmd.exe` cannot parse LF-only batch files. The `.gitattributes` entry `*.cmd text eol=crlf` and their absence from the allowlist handle this.
-5. **Tests that compare string literals containing `\r\n` will fail** after converting test source files. Check for any `Assert.Equal` calls that compare multi-line strings built from file contents. In practice, xUnit test source files that use `\n` in C# verbatim strings (`@"` or raw string literals) are unaffected; only tests that read files with `File.ReadAllText` and compare against a CRLF-containing literal are at risk.
-6. **Do not set `core.eol` globally.** It is a per-machine workaround. The `.gitattributes` and `.editorconfig` files are the correct, portable solutions.
-7. **A missing `.editorconfig` means editors will keep writing CRLF on Windows** even after you normalize the repo. The normalization is only permanent if the editor is also told to use LF via `.editorconfig`.
+5. **Never write the conversion back with `[System.IO.File]::WriteAllText($f, $text -replace "`r`n", "`n")`.** On some PowerShell 7.x builds (and Windows PowerShell 5.1) the `-replace` result does not bind to the `(string, char[], Encoding?)` overload and every write fails with `Cannot find an overload for "WriteAllText" and the argument count: "3"` — while the counter keeps incrementing, so the script reports success without having written anything. The byte-level loop in Step 3 is the correct, portable form; it is also immune to BOM damage. See Step 3 for the fix.
+6. **Tests that compare string literals containing `\r\n` will fail** after converting test source files. Check for any `Assert.Equal` calls that compare multi-line strings built from file contents. In practice, xUnit test source files that use `\n` in C# verbatim strings (`@"` or raw string literals) are unaffected; only tests that read files with `File.ReadAllText` and compare against a CRLF-containing literal are at risk.
+7. **Do not set `core.eol` globally.** It is a per-machine workaround. The `.gitattributes` and `.editorconfig` files are the correct, portable solutions.
+8. **A missing `.editorconfig` means editors will keep writing CRLF on Windows** even after you normalize the repo. The normalization is only permanent if the editor is also told to use LF via `.editorconfig`.
