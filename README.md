@@ -15,6 +15,8 @@ This repository is intentionally lightweight: each skill lives in its own folder
 ├── skills/
 │   ├── dotnet-normalize-lineendings/
 │   │   └── SKILL.md
+│   ├── csharp-generated-regex/
+│   │   └── SKILL.md
 │   ├── net-maui-custom-control/
 │   │   └── SKILL.md
 │   ├── net-maui-popups/
@@ -22,6 +24,8 @@ This repository is intentionally lightweight: each skill lives in its own folder
 │   └── net-maui-skiasharp/
 │       └── SKILL.md
 ├── showcases/
+│   ├── csharp-generated-regex/
+│   │   └── refactor-inline-regex.md
 │   ├── net-maui-custom-control/
 │   │   └── create-all-controls.md
 │   ├── net-maui-popups/
@@ -43,14 +47,16 @@ Each skill folder follows the standard Copilot skill pattern:
 The current repository includes:
 
 - `dotnet-normalize-lineendings` — Git repository line-ending audit and normalization (diagnosis, `.gitattributes` creation, PowerShell in-place CRLF→LF conversion, `core.autocrlf`/`core.eol` interaction)
+- `csharp-generated-regex` — prefer the .NET `GeneratedRegex` source generator for constant C# regular-expression patterns
 - `net-maui-custom-control` — .NET MAUI custom control design and implementation guidance (base-class choice by semantic role, BindableProperty, ControlTemplate, XAML vs C#, when to defer to SkiaSharp)
 - `net-maui-popups` — .NET MAUI popup and snackbar implementation guidance
 - `net-maui-skiasharp` — .NET MAUI custom 2D rendering with SkiaSharp 4.x (SKCanvasView vs SKGLView, coordinate systems, invalidation/animation, resource reuse, 4.x API rules)
 
 ## Validation showcases
 
-Each skill has a matching task under `showcases/` used to validate the skill text: a blank MAUI project is created in `E:\temp` (`dotnet new maui`), the showcase is implemented strictly from the skill, and the project is compiled. The validation run should produce clear feedback on the skill's contents.
+Each skill has a matching task under `showcases/` used to validate the skill text. The task describes its own setup and verification steps; MAUI showcases use a blank project in `E:\temp`, while other showcases use the project type appropriate to the skill. Implement the showcase strictly from the skill and report clear feedback on its contents.
 
+- `showcases/csharp-generated-regex/refactor-inline-regex.md` — replace an inline product-code regex with a source-generated regex and verify matching behavior
 - `showcases/net-maui-custom-control/create-all-controls.md` — one compact control per base-class category, all on one page
 - `showcases/net-maui-popups/create-all-popups.md` — one button per popup pattern
 - `showcases/net-maui-skiasharp/create-skiasharp-showcase.md` — three small animated/interactive SkiaSharp controls
